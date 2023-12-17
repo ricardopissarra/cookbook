@@ -1,10 +1,11 @@
 package com.rpissarra.recipe;
 
 
+import com.rpissarra.ingredients.Ingredients;
+import com.rpissarra.steps.Steps;
 import jakarta.persistence.*;
 
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "recipe")
@@ -24,6 +25,12 @@ public class Recipe {
 
     @Column(nullable = true)
     private Date updatedate;
+
+    @OneToMany(mappedBy = "recipe")
+    private List<Ingredients> ingredients;
+
+    @OneToMany(mappedBy = "recipe")
+    private List<Steps> steps;
 
     public Recipe() {}
 
@@ -63,6 +70,22 @@ public class Recipe {
 
     public void setUpdatedate(Date updatedate) {
         this.updatedate = updatedate;
+    }
+
+    public List<Ingredients> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredients> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<Steps> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<Steps> steps) {
+        this.steps = steps;
     }
 
     @Override

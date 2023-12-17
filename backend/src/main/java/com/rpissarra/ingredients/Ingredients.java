@@ -22,7 +22,7 @@ public class Ingredients {
     @Column(nullable = false)
     private Date createdate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Recipe.class)
     @JoinColumn(name = "idrecipe")
     private Recipe recipe;
 
