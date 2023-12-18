@@ -1,10 +1,12 @@
 package com.rpissarra.recipe.dto;
 
 import com.rpissarra.recipe.Recipe;
+import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Service
 public class RecipeDTOMapper implements Function<Recipe, RecipeDTO> {
 
     @Override

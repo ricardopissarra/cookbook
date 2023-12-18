@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class RecipeDAL implements RecipeDao {
+public class RecipeDAL {
 
     private final RecipeRepository recipeRepository;
 
@@ -14,28 +14,36 @@ public class RecipeDAL implements RecipeDao {
         this.recipeRepository = recipeRepository;
     }
 
-    @Override
+
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
     }
 
-    @Override
+
     public Optional<Recipe> getRecipeById(Long id) {
         return recipeRepository.findById(id);
     }
 
-    @Override
+
     public void insertRecipe(Recipe recipe) {
         recipeRepository.save(recipe);
     }
 
-    @Override
+
     public boolean existsRecipeWithId(Long id) {
         return recipeRepository.existsRecipeByIdrecipe(id);
     }
 
-    @Override
+
     public void updateRecipe(Recipe recipe) {
         recipeRepository.save(recipe);
+    }
+
+   public List<Recipe> getAllRecipesWithIngredient(String ingredient) {
+        return recipeRepository.getAllRecipesWithIngredient(ingredient);
+    }
+
+    public void deleteRecipeById(Long id) {
+        recipeRepository.deleteById(id);
     }
 }
