@@ -46,4 +46,8 @@ public class RecipeDAL {
     public void deleteRecipeById(Long id) {
         recipeRepository.deleteById(id);
     }
+
+    public List<Recipe> findByNameLike (String name) {
+        return recipeRepository.findByNameContaining(name);
+    }
 }

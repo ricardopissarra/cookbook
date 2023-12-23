@@ -41,7 +41,13 @@ public class RecipeService {
     }
 
     public List<RecipeDTO> getAllRecipesWithIngredient(String ingredient) {
-        return recipeDAL.getAllRecipesWithIngredient(ingredient)
+        List<Recipe> lstRecipes = recipeDAL.getAllRecipesWithIngredient(ingredient);
+
+        if (lstRecipes == null || lstRecipes.isEmpty()) {
+            throw new ResourceNotFoundException("Recipes with ingredient [%s] not found.".formatted(ingredient));
+        }
+
+        return lstRecipes
                 .stream()
                 .map(recipeDTOMapper)
                 .collect(Collectors.toList());
@@ -50,7 +56,7 @@ public class RecipeService {
     public void addRecipe(RecipeRegistrationRequest recipeRegistrationRequest) {
         Recipe recipe = new Recipe();
         Date createDate = new Date();
-        recipe.setName(recipeRegistrationRequest.name());
+        recipe.setName(recipeRegistrationRequest.name().toUpperCase());
         recipe.setCreatedate(createDate);
         recipe.setUpdatedate(null);
         recipeDAL.insertRecipe(recipe);
@@ -67,6 +73,18 @@ public class RecipeService {
         return recipeDAL.getRecipeById(id);
     }
 
+    public List<RecipeDTO> getRecipeByName (String name) {
+        List<Recipe> lstRecipes = recipeDAL.findByNameLike(name.toUpperCase());
+
+        if (lstRecipes == null || lstRecipes.isEmpty()) {
+            throw new ResourceNotFoundException("Recipe with name [%s] not found.".formatted(name));
+        }
+
+        return lstRecipes.stream()
+                .map(recipeDTOMapper)
+                .collect(Collectors.toList());
+    }
+
     public void updateRecipe(Long id, RecipeUpdateRequest recipeUpdateRequest) {
         Recipe recipe = getRecipeById(id)
                 .orElseThrow(
@@ -76,7 +94,7 @@ public class RecipeService {
         boolean hasChanges = false;
 
         if (recipeUpdateRequest.name() != null && !recipeUpdateRequest.name().equals(recipe.getName())) {
-            recipe.setName(recipeUpdateRequest.name());
+            recipe.setName(recipeUpdateRequest.name().toUpperCase());
             hasChanges = true;
         }
 
@@ -101,7 +119,7 @@ public class RecipeService {
         if (!hasChanges) {
             throw new RequestValidationException("No changes found in recipe with id [%s]".formatted(id));
         }
-
+        recipe.setUpdatedate(new Date());
         recipeDAL.updateRecipe(recipe);
     }
 

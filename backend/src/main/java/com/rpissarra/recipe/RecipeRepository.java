@@ -13,4 +13,5 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query(value = "SELECT r FROM Recipe r, Ingredients i WHERE r.idrecipe = i.recipe.idrecipe AND i.name like %:name%")
     List<Recipe> getAllRecipesWithIngredient(@Param("name") String ingredient);
 
+    List<Recipe> findByNameContaining(String name);
 }

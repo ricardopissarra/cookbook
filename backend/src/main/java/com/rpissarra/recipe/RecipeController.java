@@ -22,9 +22,14 @@ public class RecipeController {
         return recipeService.getAllRecipes();
     }
 
-    @GetMapping("{ingredient}")
+    @GetMapping("ingredient/{ingredient}")
     public List<RecipeDTO> getAllRecipesWithIngredient(@PathVariable(required = true, name = "ingredient")  String ingredient) {
         return recipeService.getAllRecipesWithIngredient(ingredient);
+    }
+
+    @GetMapping("name/{name}")
+    public List<RecipeDTO> getRecipesWithNameLike(@PathVariable(required = true, name = "name")  String name) {
+        return recipeService.getRecipeByName(name);
     }
 
     @PutMapping("{id}")
