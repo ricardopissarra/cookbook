@@ -43,7 +43,7 @@ public class RecipeService {
     }
 
     public List<RecipeDTO> getAllRecipesWithIngredient(String ingredient) {
-        List<Recipe> lstRecipes = recipeDAL.getAllRecipesWithIngredient(ingredient);
+        List<Recipe> lstRecipes = recipeDAL.getAllRecipesWithIngredient(ingredient.toLowerCase());
 
         if (lstRecipes == null || lstRecipes.isEmpty()) {
             throw new ResourceNotFoundException("Recipes with ingredient [%s] not found.".formatted(ingredient));
@@ -58,7 +58,7 @@ public class RecipeService {
     public void addRecipe(RecipeRegistrationRequest recipeRegistrationRequest) {
         Recipe recipe = new Recipe();
         Date createDate = new Date();
-        recipe.setName(recipeRegistrationRequest.name().toUpperCase());
+        recipe.setName(recipeRegistrationRequest.name().toLowerCase());
         recipe.setCreatedate(createDate);
         recipe.setUpdatedate(null);
         recipeDAL.insertRecipe(recipe);
@@ -76,7 +76,7 @@ public class RecipeService {
     }
 
     public List<RecipeDTO> getRecipeByName (String name) {
-        List<Recipe> lstRecipes = recipeDAL.findByNameLike(name.toUpperCase());
+        List<Recipe> lstRecipes = recipeDAL.findByNameLike(name.toLowerCase());
 
         if (lstRecipes == null || lstRecipes.isEmpty()) {
             throw new ResourceNotFoundException("Recipe with name [%s] not found.".formatted(name));
@@ -96,7 +96,7 @@ public class RecipeService {
         boolean hasChanges = false;
 
         if (recipeUpdateRequest.name() != null && !recipeUpdateRequest.name().equals(recipe.getName())) {
-            recipe.setName(recipeUpdateRequest.name().toUpperCase());
+            recipe.setName(recipeUpdateRequest.name().toLowerCase());
             hasChanges = true;
         }
 
@@ -147,7 +147,7 @@ public class RecipeService {
 
         for (String i : inputList) {
             Ingredients ingredients = new Ingredients();
-            ingredients.setName(i);
+            ingredients.setName(i.toLowerCase());
             ingredients.setCreatedate(new Date());
             ingredients.setRecipe(recipe);
             ingredientsList.add(ingredients);
@@ -156,11 +156,11 @@ public class RecipeService {
     }
 
     private List<Steps> convertToStepsList(List<String> inputList, Recipe recipe) {
-        List<Steps> stepsList = new ArrayList<Steps>();
+        List<Steps> stepsList = new ArrayList<>();
 
         for (String s : inputList) {
             Steps steps = new Steps();
-            steps.setDescription(s);
+            steps.setDescription(s.toLowerCase());
             steps.setCreatedate(new Date());
             steps.setRecipe(recipe);
             stepsList.add(steps);
@@ -195,5 +195,12 @@ public class RecipeService {
         }
 
         return recipeDTOMapper.apply(recipeDAL.getRecipeById(id).get());
+    }
+
+    public List<RecipeDTO> getAllRecipesByNameOrIngredient(String word) {
+        List<Recipe> lstRecipe = recipeDAL.getAllRecipesWithKeyword(word.toLowerCase());
+        return lstRecipe.stream()
+                .map(recipeDTOMapper)
+                .collect(Collectors.toList());
     }
 }

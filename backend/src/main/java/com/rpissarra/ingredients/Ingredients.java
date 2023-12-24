@@ -28,8 +28,7 @@ public class Ingredients {
 
     public Ingredients(){}
 
-    public Ingredients(Long idingredient, String name, Date createdate, Recipe recipe) {
-        this.idingredient = idingredient;
+    public Ingredients(String name, Date createdate, Recipe recipe) {
         this.name = name;
         this.createdate = createdate;
         this.recipe = recipe;

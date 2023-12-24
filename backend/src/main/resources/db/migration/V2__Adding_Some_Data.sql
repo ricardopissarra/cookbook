@@ -1,4 +1,4 @@
-INSERT INTO recipe ("name", createdate, updatedate) VALUES('CLASSIC RAGU BOLOGNESE', NOW(), NULL);
+INSERT INTO recipe ("name", createdate, updatedate) VALUES('classic ragu blognese', NOW(), NULL);
 
 INSERT INTO steps (description, createdate, idrecipe) VALUES('PREPARE your ingredients by finely chopping your pancetta, carrot,  celery and onion', NOW(), (select max(idrecipe) from recipe r));
 INSERT INTO steps (description, createdate, idrecipe) VALUES('HEAT a large frying pan over a medium heat and fry the pancetta for 2 to 3 minutes until crisp.', NOW(), (select max(idrecipe) from recipe r));
@@ -21,7 +21,7 @@ INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('140g tom
 INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES( '500ml boiling water', NOW(), (select max(idrecipe) from recipe r));
 INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('salt & freshly ground pepper', NOW(), (select max(idrecipe) from recipe r));
 
-INSERT INTO recipe ("name", createdate, updatedate) VALUES('SPINACH PESTO', NOW(), NULL);
+INSERT INTO recipe ("name", createdate, updatedate) VALUES('spinach pesto', NOW(), NULL);
 
 INSERT INTO steps (description, createdate, idrecipe) VALUES('Prepare your ingredients: Measure out your ingredients.', NOW(), (select max(idrecipe) from recipe r));
 INSERT INTO steps (description, createdate, idrecipe) VALUES('Place the measured almonds in the food processor, start by pulsing the food processor to break up the pine almonds.', NOW(), (select max(idrecipe) from recipe r));

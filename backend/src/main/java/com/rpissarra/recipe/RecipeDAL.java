@@ -50,4 +50,8 @@ public class RecipeDAL {
     public List<Recipe> findByNameLike (String name) {
         return recipeRepository.findByNameContaining(name);
     }
+
+    public List<Recipe> getAllRecipesWithKeyword(String word) {
+       return recipeRepository.getAllRecipesWithKeyword(word);
+    }
 }

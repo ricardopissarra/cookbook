@@ -28,8 +28,7 @@ public class Steps {
 
     public Steps() {}
 
-    public Steps(Long idstep, String description, Date createdate, Recipe recipe) {
-        this.idstep = idstep;
+    public Steps(String description, Date createdate, Recipe recipe) {
         this.description = description;
         this.createdate = createdate;
         this.recipe = recipe;

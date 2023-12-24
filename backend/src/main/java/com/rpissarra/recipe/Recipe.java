@@ -34,8 +34,7 @@ public class Recipe {
 
     public Recipe() {}
 
-    public Recipe(Long id, String name, Date createdate) {
-        this.idrecipe = id;
+    public Recipe(String name, Date createdate) {
         this.name = name;
         this.createdate = createdate;
     }
