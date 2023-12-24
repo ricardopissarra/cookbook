@@ -22,6 +22,13 @@ public class RecipeController {
         return recipeService.getAllRecipes();
     }
 
+    @GetMapping("{id}")
+    public RecipeDTO getRecipeById(@PathVariable(required = true, name = "id")  Long id) {
+        return recipeService.findRecipeById(id);
+    }
+
+    // TODO: A generic search method that unions search by name like and by ingredient removing duplicates
+
     @GetMapping("ingredient/{ingredient}")
     public List<RecipeDTO> getAllRecipesWithIngredient(@PathVariable(required = true, name = "ingredient")  String ingredient) {
         return recipeService.getAllRecipesWithIngredient(ingredient);

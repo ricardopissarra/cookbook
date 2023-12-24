@@ -9,6 +9,7 @@ import com.rpissarra.recipe.dto.RecipeDTOMapper;
 import com.rpissarra.steps.Steps;
 import com.rpissarra.steps.StepsDAL;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 public class RecipeService {
 
@@ -187,4 +189,11 @@ public class RecipeService {
     }
 
 
+    public RecipeDTO findRecipeById(Long id) {
+        if (!recipeDAL.existsRecipeWithId(id)) {
+            throw new ResourceNotFoundException("Could not find any Recipe with id [%s]".formatted(id));
+        }
+
+        return recipeDTOMapper.apply(recipeDAL.getRecipeById(id).get());
+    }
 }

@@ -30,6 +30,7 @@ INSERT INTO steps (description, createdate, idrecipe) VALUES('Place the rest of 
 INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('100g parmesan cheese', NOW(), (select max(idrecipe) from recipe r));
 INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('50g almonds', NOW(), (select max(idrecipe) from recipe r));
 INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('2 garlic cloves', NOW(), (select max(idrecipe) from recipe r));
-INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('100g spinach', NOW(), (select max(idrecipe) from recipe r));
+INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('80g spinach', NOW(), (select max(idrecipe) from recipe r));
+INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('20g basil', NOW(), (select max(idrecipe) from recipe r));
 INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('200g olive oil', NOW(), (select max(idrecipe) from recipe r));
 INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('1/2 tbsp of salt', NOW(), (select max(idrecipe) from recipe r));
