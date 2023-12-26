@@ -45,10 +45,6 @@ public class RecipeService {
     public List<RecipeDTO> getAllRecipesWithIngredient(String ingredient) {
         List<Recipe> lstRecipes = recipeDAL.getAllRecipesWithIngredient(ingredient.toLowerCase());
 
-        if (lstRecipes == null || lstRecipes.isEmpty()) {
-            throw new ResourceNotFoundException("Recipes with ingredient [%s] not found.".formatted(ingredient));
-        }
-
         return lstRecipes
                 .stream()
                 .map(recipeDTOMapper)
@@ -56,6 +52,9 @@ public class RecipeService {
     }
 
     public void addRecipe(RecipeRegistrationRequest recipeRegistrationRequest) {
+        if (recipeRegistrationRequest.ingredients().isEmpty() || recipeRegistrationRequest.steps().isEmpty()) {
+            throw new RequestValidationException("The list of ingredients/steps can't be empty");
+        }
         Recipe recipe = new Recipe();
         Date createDate = new Date();
         recipe.setName(recipeRegistrationRequest.name().toLowerCase());
@@ -78,11 +77,22 @@ public class RecipeService {
     public List<RecipeDTO> getRecipeByName (String name) {
         List<Recipe> lstRecipes = recipeDAL.findByNameLike(name.toLowerCase());
 
-        if (lstRecipes == null || lstRecipes.isEmpty()) {
-            throw new ResourceNotFoundException("Recipe with name [%s] not found.".formatted(name));
+        return lstRecipes.stream()
+                .map(recipeDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+    public RecipeDTO findRecipeById(Long id) {
+        if (!recipeDAL.existsRecipeWithId(id)) {
+            throw new ResourceNotFoundException("Could not find any Recipe with id [%s]".formatted(id));
         }
 
-        return lstRecipes.stream()
+        return recipeDTOMapper.apply(recipeDAL.getRecipeById(id).get());
+    }
+
+    public List<RecipeDTO> getAllRecipesByNameOrIngredient(String word) {
+        List<Recipe> lstRecipe = recipeDAL.getAllRecipesWithKeyword(word.toLowerCase());
+        return lstRecipe.stream()
                 .map(recipeDTOMapper)
                 .collect(Collectors.toList());
     }
@@ -99,17 +109,27 @@ public class RecipeService {
             recipe.setName(recipeUpdateRequest.name().toLowerCase());
             hasChanges = true;
         }
+        List<String> listOriginalIngredients = recipe.getIngredients()
+                                    .stream()
+                                    .map(i -> i.getName())
+                                    .collect(Collectors.toList());
 
-        if (recipeUpdateRequest.ingredients() != null && !recipeUpdateRequest.ingredients().isEmpty()) {
-            // TODO: Think about another way to validate if the Ingredients were updated insted of delete and insert
+        if (recipeUpdateRequest.ingredients() != null && !recipeUpdateRequest.ingredients().isEmpty()
+        && !recipeUpdateRequest.ingredients().equals(listOriginalIngredients)) {
             deleteAllIngredients(recipe.getIdrecipe());
             ingredientsDAL.insertAllIngredients(convertToIngredientsList(recipeUpdateRequest.ingredients(), recipe));
 
             hasChanges = true;
         }
 
-        if (recipeUpdateRequest.steps() != null && !recipeUpdateRequest.steps().isEmpty()) {
-            // TODO: Think about another way to validate if the Steps were updated insted of delete and insert
+        List<String> listOriginalSteps = recipe.getSteps()
+                        .stream()
+                        .map(s -> s.getDescription())
+                        .collect(Collectors.toList());
+
+        if (recipeUpdateRequest.steps() != null && !recipeUpdateRequest.steps().isEmpty()
+        && !recipeUpdateRequest.steps().equals(listOriginalSteps)) {
+
             deleteAllSteps(recipe.getIdrecipe());
             stepsDAL.insertAllSteps(convertToStepsList(recipeUpdateRequest.steps(), recipe));
 
@@ -131,12 +151,12 @@ public class RecipeService {
                         () -> new ResourceNotFoundException("Recipe with id [%s] not found.".formatted(id))
                 );
         List<Ingredients> ingredientsList = ingredientsDAL.findAllIngredientsByRecipeId(id);
-        if (ingredientsList != null) {
+        if (ingredientsList != null && !ingredientsList.isEmpty()) {
             ingredientsDAL.deleteAllIngredients(ingredientsList);
         }
 
         List<Steps> stepsList = stepsDAL.findAllStepsByRecipeId(id);
-        if (stepsList != null) {
+        if (stepsList != null && !stepsList.isEmpty()) {
             stepsDAL.deleteAllSteps(stepsList);
         }
         recipeDAL.deleteRecipeById(id);
@@ -188,19 +208,4 @@ public class RecipeService {
         stepsDAL.deleteAllSteps(stepsList);
     }
 
-
-    public RecipeDTO findRecipeById(Long id) {
-        if (!recipeDAL.existsRecipeWithId(id)) {
-            throw new ResourceNotFoundException("Could not find any Recipe with id [%s]".formatted(id));
-        }
-
-        return recipeDTOMapper.apply(recipeDAL.getRecipeById(id).get());
-    }
-
-    public List<RecipeDTO> getAllRecipesByNameOrIngredient(String word) {
-        List<Recipe> lstRecipe = recipeDAL.getAllRecipesWithKeyword(word.toLowerCase());
-        return lstRecipe.stream()
-                .map(recipeDTOMapper)
-                .collect(Collectors.toList());
-    }
 }

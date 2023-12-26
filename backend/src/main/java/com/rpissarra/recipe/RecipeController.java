@@ -2,6 +2,7 @@ package com.rpissarra.recipe;
 
 
 import com.rpissarra.recipe.dto.RecipeDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,19 +28,19 @@ public class RecipeController {
         return recipeService.findRecipeById(id);
     }
 
-    @GetMapping("search/{word}")
-    public List<RecipeDTO> getAllRecipesByNameOrIngredient(@PathVariable(required = true, name = "word") String word) {
-        return recipeService.getAllRecipesByNameOrIngredient(word);
+    @GetMapping("search")
+    public List<RecipeDTO> getAllRecipesByNameOrIngredient(@RequestParam String keyword) {
+        return recipeService.getAllRecipesByNameOrIngredient(keyword);
     }
 
-    @GetMapping("search/ingredient/{ingredient}")
-    public List<RecipeDTO> getAllRecipesWithIngredient(@PathVariable(required = true, name = "ingredient")  String ingredient) {
-        return recipeService.getAllRecipesWithIngredient(ingredient);
+    @GetMapping("search/ingredients")
+    public List<RecipeDTO> getAllRecipesWithIngredient(@RequestParam String ingredientName) {
+        return recipeService.getAllRecipesWithIngredient(ingredientName);
     }
 
-    @GetMapping("search/name/{name}")
-    public List<RecipeDTO> getRecipesWithNameLike(@PathVariable(required = true, name = "name")  String name) {
-        return recipeService.getRecipeByName(name);
+    @GetMapping("search/name")
+    public List<RecipeDTO> getRecipesWithNameLike(@RequestParam String recipeName) {
+        return recipeService.getRecipeByName(recipeName);
     }
 
     @PutMapping("{id}")
@@ -59,7 +60,6 @@ public class RecipeController {
     ) {
         recipeService.addRecipe(recipeRegistrationRequest);
 
-        return ResponseEntity.ok()
-                .build();
+        return new ResponseEntity<>(recipeRegistrationRequest, HttpStatus.CREATED);
     }
 }
