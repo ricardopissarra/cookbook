@@ -29,16 +29,16 @@ public class RecipeController {
     }
 
     @GetMapping("search")
-    public List<RecipeDTO> getAllRecipesByNameOrIngredient(@RequestParam String keyword) {
-        return recipeService.getAllRecipesByNameOrIngredient(keyword);
+    public List<RecipeDTO> getAllRecipesByNameOrIngredient(@RequestParam String recipeNameOrIngredientName) {
+        return recipeService.getAllRecipesByNameOrIngredient(recipeNameOrIngredientName);
     }
 
-    @GetMapping("search/ingredients")
+    @GetMapping("ingredients")
     public List<RecipeDTO> getAllRecipesWithIngredient(@RequestParam String ingredientName) {
         return recipeService.getAllRecipesWithIngredient(ingredientName);
     }
 
-    @GetMapping("search/name")
+    @GetMapping("name")
     public List<RecipeDTO> getRecipesWithNameLike(@RequestParam String recipeName) {
         return recipeService.getRecipeByName(recipeName);
     }
