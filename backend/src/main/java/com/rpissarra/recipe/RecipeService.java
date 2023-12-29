@@ -90,8 +90,8 @@ public class RecipeService {
         return recipeDTOMapper.apply(recipeDAL.getRecipeById(id).get());
     }
 
-    public List<RecipeDTO> getAllRecipesByNameOrIngredient(String word) {
-        List<Recipe> lstRecipe = recipeDAL.getAllRecipesWithKeyword(word.toLowerCase());
+    public List<RecipeDTO> getAllRecipesByNameOrIngredient(String nameOrIngredient) {
+        List<Recipe> lstRecipe = recipeDAL.getAllRecipesWithKeyword(nameOrIngredient.toLowerCase());
         return lstRecipe.stream()
                 .map(recipeDTOMapper)
                 .collect(Collectors.toList());
@@ -109,6 +109,8 @@ public class RecipeService {
             recipe.setName(recipeUpdateRequest.name().toLowerCase());
             hasChanges = true;
         }
+
+        // TODO: Maybe use Set Instead of List and try to really update instead of update and delete
         List<String> listOriginalIngredients = recipe.getIngredients()
                                     .stream()
                                     .map(i -> i.getName())

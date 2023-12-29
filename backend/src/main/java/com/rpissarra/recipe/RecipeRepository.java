@@ -15,8 +15,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     List<Recipe> findByNameContaining(String name);
 
-    @Query(value = "(SELECT r.* FROM Recipe r, Ingredients i WHERE r.idrecipe = i.idrecipe AND i.name_ingredient like %:name%)" +
+    @Query(value = "(SELECT r.* FROM Recipe r, Ingredients i WHERE r.idrecipe = i.idrecipe AND i.name_ingredient like %:nameOrIngredient%)" +
             " UNION" +
-            " (SELECT * FROM Recipe r WHERE r.name like %:name%)", nativeQuery = true)
-    List<Recipe> getAllRecipesWithKeyword(@Param("name") String word);
+            " (SELECT * FROM Recipe r WHERE r.name like %:nameOrIngredient%)", nativeQuery = true)
+    List<Recipe> getAllRecipesWithKeyword(@Param("nameOrIngredient") String nameOrIngredient);
 }

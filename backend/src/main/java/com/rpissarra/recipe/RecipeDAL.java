@@ -51,7 +51,7 @@ public class RecipeDAL {
         return recipeRepository.findByNameContaining(name);
     }
 
-    public List<Recipe> getAllRecipesWithKeyword(String word) {
-       return recipeRepository.getAllRecipesWithKeyword(word);
+    public List<Recipe> getAllRecipesWithKeyword(String nameOrIngredient) {
+       return recipeRepository.getAllRecipesWithKeyword(nameOrIngredient);
     }
 }

@@ -162,7 +162,7 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
     void getAllRecipesWithKeywordIsNotEmpty() {
         // Given
         String recipeName = FAKER.name().nameWithMiddle().toLowerCase();
-        String keyword = "carrot";
+        String keyword = FAKER.nation().language();
         Recipe recipe1 = new Recipe(
                recipeName, new Date()
         );
@@ -195,7 +195,7 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
     void getAllRecipesWithKeywordIsEmpty() {
         // Given
         String recipeName = FAKER.name().nameWithMiddle().toLowerCase();
-        String keyword = "carrot";
+        String keyword = FAKER.nation().capitalCity();
         String ingredientName = FAKER.name().nameWithMiddle();
         Recipe recipe1 = new Recipe(
                 recipeName, new Date()
