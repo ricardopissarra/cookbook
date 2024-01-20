@@ -1,13 +1,14 @@
+version: '3'
 services:
   cookbookdb:
     container_name: postgres
     image: postgres
     environment:
+      POSTGRES_DB: cookbook
       POSTGRES_USER: rpissarra
       POSTGRES_PASSWORD: password
-      PGDATA: /data/postgres
     volumes:
-      - postgres:/data/postgres
+      - ./postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:

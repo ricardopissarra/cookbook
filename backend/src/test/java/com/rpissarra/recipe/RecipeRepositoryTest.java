@@ -184,7 +184,7 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
         ingredientRepository.save(ingredients2);
 
         // When
-        List<Recipe> lstRecipe = underTest.getAllRecipesWithKeyword(keyword);
+        List<Recipe> lstRecipe = underTest.getAllRecipesByNameOrIngredient(keyword);
 
         // Then
         assertThat(lstRecipe).hasSize(2);
@@ -217,7 +217,7 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
         ingredientRepository.save(ingredients2);
 
         // When
-        List<Recipe> lstRecipe = underTest.getAllRecipesWithKeyword(keyword);
+        List<Recipe> lstRecipe = underTest.getAllRecipesByNameOrIngredient(keyword);
 
         // Then
         assertThat(lstRecipe).isEmpty();

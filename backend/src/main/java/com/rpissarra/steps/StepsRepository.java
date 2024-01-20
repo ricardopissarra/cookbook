@@ -1,12 +1,14 @@
 package com.rpissarra.steps;
 
-import com.rpissarra.ingredients.Ingredients;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface StepsRepository extends JpaRepository<Steps, Long> {
 
     @Query(value = "select s from Steps s where s.recipe.idrecipe = :id")

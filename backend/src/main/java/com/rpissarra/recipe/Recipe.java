@@ -39,6 +39,12 @@ public class Recipe {
         this.createdate = createdate;
     }
 
+    public Recipe(Long idrecipe, String name, Date createdate) {
+        this.idrecipe = idrecipe;
+        this.name = name;
+        this.createdate = createdate;
+    }
+
     public Long getIdrecipe() {
         return idrecipe;
     }

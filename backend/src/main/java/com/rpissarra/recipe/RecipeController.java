@@ -27,7 +27,7 @@ public class RecipeController {
     }
 
     @Operation(summary = "Get all recipes",
-            description = "Displays all recipes available at the time")
+            description = "Returns all the recipes in the DB")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "operation succeeded")}
     )
@@ -37,7 +37,8 @@ public class RecipeController {
     }
 
     @Operation(summary = "Get recipe by Id",
-            description = "Displays the recipe with the id passed as a param")
+            description = "Displays the recipe with the given id. If there's no recipe with that id " +
+                    "a 404 response is returned")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "operation succeeded"),
             @ApiResponse(responseCode = "404", description = "there's no recipe with that id",
@@ -49,8 +50,9 @@ public class RecipeController {
         return recipeService.findRecipeById(id);
     }
 
-    @Operation(summary = "Get all recipes that contain the keyword in the name or ingredients",
-            description = "Get all recipes that contain the keyword in the name or ingredients")
+    @Operation(summary = "Get all recipes that contain the keyword",
+            description = "Get all the recipes that contain given keyword, the keyword can be present in the name of" +
+                    " the recipe or in the list of ingredients")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "operation succeeded")}
     )
@@ -59,8 +61,8 @@ public class RecipeController {
         return recipeService.getAllRecipesByNameOrIngredient(keyWord);
     }
 
-    @Operation(summary = "Get all recipes that contain some ingredient",
-            description = "Get all recipes that contain the the ingredient request param")
+    @Operation(summary = "Get all recipes by ingredient",
+            description = "Get all recipes that contain the given ingredient in their list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "operation succeeded")}
     )
@@ -69,18 +71,20 @@ public class RecipeController {
         return recipeService.getAllRecipesWithIngredient(ingredientName);
     }
 
-    @Operation(summary = "Get all recipes that contain some ingredient",
-            description = "Get all recipes that contain the the ingredient request param")
+    @Operation(summary = "Get all recipes by name",
+            description = "Get all recipes that contain the given name in the recipe name")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "operation succeeded")}
     )
     @GetMapping(value = "name", produces = "application/json")
-    public List<RecipeDTO> getRecipesWithNameLike(@RequestParam String recipeName) {
-        return recipeService.getRecipeByName(recipeName);
+    public List<RecipeDTO> getAllRecipesWithNameLike(@RequestParam String recipeName) {
+        return recipeService.getAllRecipesByName(recipeName);
     }
 
     @Operation(summary = "Edit a recipe",
-            description = "Edit the recipe name, ingredients or steps of the recipe with the id")
+            description = "Edit the recipe name, ingredients or steps of the recipe with the given id. " +
+                    "It returns 404 if the recipe with the id is not found, and 400 if the recipe " +
+                    "has no changes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "operation succeeded"),
             @ApiResponse(responseCode = "404", description = "there's no recipe with that id",
@@ -97,7 +101,8 @@ public class RecipeController {
     }
 
     @Operation(summary = "Delete a recipe",
-            description = "Delete the recipe with the id")
+            description = "Delete the recipe with the given id. " +
+                    "It returns 404 if the recipe with the id is not found")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "operation succeeded"),
             @ApiResponse(responseCode = "404", description = "there's no recipe with that id",

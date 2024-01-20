@@ -3,15 +3,10 @@ package com.rpissarra;
 import com.github.javafaker.Faker;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeAll;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import javax.sql.DataSource;
 
 @Testcontainers
 public abstract class AbstractDaoUnitTest {
@@ -31,7 +26,8 @@ public abstract class AbstractDaoUnitTest {
             new PostgreSQLContainer<>("postgres:latest")
                     .withDatabaseName("cookbook-dao-unit-test")
                     .withUsername("rpissarra")
-                    .withPassword("password");
+                    .withPassword("password")
+                    .withReuse(true);
 
 
     protected static Faker FAKER = new Faker();

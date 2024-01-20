@@ -34,6 +34,13 @@ public class Steps {
         this.recipe = recipe;
     }
 
+    public Steps(Long idstep,String description, Date createdate, Recipe recipe) {
+        this.idstep = idstep;
+        this.description = description;
+        this.createdate = createdate;
+        this.recipe = recipe;
+    }
+
     public Long getIdstep() {
         return idstep;
     }

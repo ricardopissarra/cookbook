@@ -34,6 +34,13 @@ public class Ingredients {
         this.recipe = recipe;
     }
 
+    public Ingredients(Long idingredient,String name, Date createdate, Recipe recipe) {
+        this.idingredient = idingredient;
+        this.name = name;
+        this.createdate = createdate;
+        this.recipe = recipe;
+    }
+
     public Long getIdingredient() {
         return idingredient;
     }
