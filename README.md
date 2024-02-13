@@ -16,9 +16,7 @@ There are two ways of building the application
   Before installing and building the application, please, run:
   
   ```
-  
   docker compose up -d cookbookdb
-  
   ```
   
   on the root of the project, in order to build the container for PostgresSQL database installation.
@@ -26,25 +24,19 @@ There are two ways of building the application
   Then you can install by running:
   
   ```
-  
   cd backend
-  
   ```
   
   Followed by:
   
   ```
-  
   mvn clean install
-  
   ```
   
   and, after you can run by entering:
   
   ```
-  
   mvn spring-boot:run
-  
   ```
 
 2. ### Using the Docker image:
@@ -52,19 +44,15 @@ There are two ways of building the application
    Start by pulling the image from Docker Hub:
 
    ```
-
    docker pull rpissarra/cookbook-api
-
    ```
 
    Then you can run the application by running:
 
    ```
-
    docker compose up -d
-   
    ```
-    on the root of the project.
+    on the root of the project, in order to build the container for PostgresSQL database installation and the cointainer for the Cookbook-api.
 
 ## Documentation and Rest Interface Interaction
 
