@@ -13,12 +13,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>cookbook</name>
 	<description>Cookbook demo project with Spring Boot</description>
-	<organization>
-		<name>rpissarra</name>
-	</organization>
 	<properties>
 		<java.version>17</java.version>
 		<docker.image.tag/>
+		<docker.username>rpissarra</docker.username>
+		<docker.image.name>cookbook-api</docker.image.name>
 	</properties>
 	<dependencies>
 		<!-- Spring Boot -->
@@ -197,7 +196,7 @@
 						</platforms>
 					</from>
 					<to>
-						<image>docker.io/${organization.name}/${project.artifactId}:${docker.image.tag}</image>
+						<image>docker.io/${docker.username}/${docker.image.name}:${docker.image.tag}</image>
 						<tags>
 							<tag>latest</tag>
 						</tags>
