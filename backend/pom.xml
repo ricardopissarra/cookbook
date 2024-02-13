@@ -40,7 +40,6 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-
 		<!-- persistence -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
