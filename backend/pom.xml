@@ -60,8 +60,7 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.2.0</version>
 		</dependency>
-
-
+		
 		<!-- Testing -->
 		<dependency>
 			<groupId>com.github.javafaker</groupId>
