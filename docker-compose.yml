@@ -9,11 +9,11 @@ services:
       POSTGRES_DB: cookbook
       PGDATA: /data/postgres
     volumes:
-      - postgres:/data/postgres
+      - db:/data/postgres
     ports:
       - "5432:5432"
     networks:
-      - postgres
+      - db
     restart: unless-stopped
 
   pgadmin:
@@ -28,15 +28,15 @@ services:
     ports:
       - "5050:80"
     networks:
-      - postgres
+      - db
     restart: unless-stopped
     depends_on:
       - cookbookdb
 
 networks:
-  postgres:
+  db:
     driver: bridge
 
 volumes:
-  postgres:
+  db:
   pgadmin:
