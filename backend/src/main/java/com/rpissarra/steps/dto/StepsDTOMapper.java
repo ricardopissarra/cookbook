@@ -10,7 +10,6 @@ public class StepsDTOMapper implements Function<Steps, StepsDTO> {
     @Override
     public StepsDTO apply(Steps steps) {
         return new StepsDTO(
-                steps.getIdstep(),
                 steps.getDescription()
         );
     }

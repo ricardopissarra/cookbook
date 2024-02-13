@@ -25,7 +25,7 @@ public abstract class AbstractDaoUnitTest {
     protected static final PostgreSQLContainer<?> postgresSQLContainer =
             new PostgreSQLContainer<>("postgres:latest")
                     .withDatabaseName("cookbook-dao-unit-test")
-                    .withUsername("rpissarra")
+                    .withUsername("postgres")
                     .withPassword("password")
                     .withReuse(true);
 

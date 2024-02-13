@@ -10,7 +10,6 @@ public class IngredientsDTOMapper implements Function<Ingredients, IngredientsDT
     @Override
     public IngredientsDTO apply(Ingredients ingredients) {
         return new IngredientsDTO(
-                ingredients.getIdingredient(),
                 ingredients.getName()
         );
     }

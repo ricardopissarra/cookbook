@@ -10,6 +10,6 @@ public record RecipeDTO(
         Long id,
         String name,
         List<IngredientsDTO> ingredients,
-        List<StepsDTO> steps
+        StepsDTO steps
 ) {
 }

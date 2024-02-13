@@ -1,13 +1,6 @@
 INSERT INTO recipe ("name", createdate, updatedate) VALUES('classic ragu blognese', NOW(), NULL);
 
-INSERT INTO steps (description, createdate, idrecipe) VALUES('PREPARE your ingredients by finely chopping your pancetta, carrot,  celery and onion', NOW(), (select max(idrecipe) from recipe r));
-INSERT INTO steps (description, createdate, idrecipe) VALUES('HEAT a large frying pan over a medium heat and fry the pancetta for 2 to 3 minutes until crisp.', NOW(), (select max(idrecipe) from recipe r));
-INSERT INTO steps (description, createdate, idrecipe) VALUES('STIR in the onion, carrot and celery and leave to sweat for 10 mins or until soft.', NOW(), (select max(idrecipe) from recipe r));
-INSERT INTO steps (description, createdate, idrecipe) VALUES('ADD the beef to the pan, stirring occasionally until it has browned all over.', NOW(), (select max(idrecipe) from recipe r));
-INSERT INTO steps (description, createdate, idrecipe) VALUES('POUR in the red wine and keep stirring for 2 minutes until the alcohol has evaporated.', NOW(), (select max(idrecipe) from recipe r));
-INSERT INTO steps (description, createdate, idrecipe) VALUES('ADD the tomato purée and stir into the sauce, then add 500ml of boiling water from the kettle and crumble in the beef stock cubes and the bay leaves.', NOW(), (select max(idrecipe) from recipe r));
-INSERT INTO steps (description, createdate, idrecipe) VALUES('SIMMER slowly for 3 hours with the lid ON to let the flavours intensify and the beef break down.', NOW(), (select max(idrecipe) from recipe r));
-INSERT INTO steps (description, createdate, idrecipe) VALUES('SEASON with salt and pepper if necessary', NOW(), (select max(idrecipe) from recipe r));
+INSERT INTO steps (description, createdate, idrecipe) VALUES('PREPARE your ingredients by finely chopping your pancetta, carrot,  celery and onion.<br>HEAT a large frying pan over a medium heat and fry the pancetta for 2 to 3 minutes until crisp.<br>STIR in the onion, carrot and celery and leave to sweat for 10 mins or until soft.<br>ADD the beef to the pan, stirring occasionally until it has browned all over.<br>POUR in the red wine and keep stirring for 2 minutes until the alcohol has evaporated.<br>ADD the tomato purée and stir into the sauce, then add 500ml of boiling water from the kettle and crumble in the beef stock cubes and the bay leaves.<br>SIMMER slowly for 3 hours with the lid ON to let the flavours intensify and the beef break down.<br>SEASON with salt and pepper if necessary', NOW(), (select max(idrecipe) from recipe r));
 
 INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('100g smoked pancetta', NOW(), (select max(idrecipe) from recipe r));
 INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('1 carrot', NOW(), (select max(idrecipe) from recipe r));
@@ -23,9 +16,7 @@ INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('salt & f
 
 INSERT INTO recipe ("name", createdate, updatedate) VALUES('spinach pesto', NOW(), NULL);
 
-INSERT INTO steps (description, createdate, idrecipe) VALUES('Prepare your ingredients: Measure out your ingredients.', NOW(), (select max(idrecipe) from recipe r));
-INSERT INTO steps (description, createdate, idrecipe) VALUES('Place the measured almonds in the food processor, start by pulsing the food processor to break up the pine almonds.', NOW(), (select max(idrecipe) from recipe r));
-INSERT INTO steps (description, createdate, idrecipe) VALUES('Place the rest of the ingredients in the bottom of the food processor with the blade attachment. Then, blend until the pesto is smooth but still gritty.', NOW(), (select max(idrecipe) from recipe r));
+INSERT INTO steps (description, createdate, idrecipe) VALUES('Prepare your ingredients: Measure out your ingredients.<br>Place the measured almonds in the food processor, start by pulsing the food processor to break up the pine almonds. <br>Place the rest of the ingredients in the bottom of the food processor with the blade attachment.<br>Then, blend until the pesto is smooth but still gritty.', NOW(), (select max(idrecipe) from recipe r));
 
 INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('100g parmesan cheese', NOW(), (select max(idrecipe) from recipe r));
 INSERT INTO ingredients (name_ingredient, createdate, idrecipe) VALUES('50g almonds', NOW(), (select max(idrecipe) from recipe r));

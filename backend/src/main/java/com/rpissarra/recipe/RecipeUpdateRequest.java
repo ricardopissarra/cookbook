@@ -5,6 +5,6 @@ import java.util.List;
 public record RecipeUpdateRequest(
         String name,
         List<String> ingredients,
-        List<String> steps
+        String steps
 ) {
 }

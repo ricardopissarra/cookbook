@@ -27,9 +27,6 @@ public class RecipeDTOMapper implements Function<Recipe, RecipeDTO> {
                         .stream()
                         .map(ingredientsDTOMapper)
                         .collect(Collectors.toList()),
-                recipe.getSteps()
-                        .stream()
-                        .map(stepsDTOMapper)
-                        .collect(Collectors.toList()));
+                stepsDTOMapper.apply(recipe.getSteps()));
     }
 }

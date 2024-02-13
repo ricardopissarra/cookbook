@@ -76,24 +76,25 @@ class RecipeServiceTest {
         String stepName = FAKER.name().name().toLowerCase();
         String recipeName = FAKER.name().name();
         Long id = FAKER.number().randomNumber();
+        Date createDate = new Date();
         Recipe recipe = new Recipe(
                 id,
                 recipeName,
-                new Date()
+                createDate
         );
 
         recipe.setIngredients(List.of(new Ingredients(
                 id,
                 ingredientName,
-                new Date(),
+                createDate,
                 recipe
         )));
-        recipe.setSteps(List.of(new Steps(
+        recipe.setSteps(new Steps(
                 id,
                 stepName,
-                new Date(),
+                createDate,
                 recipe
-        )));
+        ));
 
         when(recipeRepository.getAllRecipesWithIngredient(ingredientName))
                 .thenReturn(List.of(recipe));
@@ -111,7 +112,7 @@ class RecipeServiceTest {
         RecipeRegistrationRequest recipeRegistrationRequest = new RecipeRegistrationRequest(
                 FAKER.name().nameWithMiddle().toLowerCase(),
                 List.of(FAKER.name().nameWithMiddle().toLowerCase()),
-                List.of(FAKER.name().fullName().toLowerCase())
+                FAKER.name().fullName()
         );
 
         // When
@@ -132,12 +133,12 @@ class RecipeServiceTest {
 
         List<Ingredients> capturedIngredients = ingredientsArgumentCaptor.getValue();
 
-        ArgumentCaptor<List<Steps>> stepsArgumentCaptor = ArgumentCaptor.forClass(
-                List.class
+        ArgumentCaptor<Steps> stepsArgumentCaptor = ArgumentCaptor.forClass(
+                Steps.class
         );
-        verify(stepsRepository).saveAll(stepsArgumentCaptor.capture());
+        verify(stepsRepository).save(stepsArgumentCaptor.capture());
 
-        List<Steps> capturedSteps = stepsArgumentCaptor.getValue();
+        Steps capturedSteps = stepsArgumentCaptor.getValue();
 
         assertThat(capturedRecipe.getIdrecipe()).isNull();
         assertThat(capturedRecipe.getName()).isEqualTo(recipeRegistrationRequest.name());
@@ -145,33 +146,8 @@ class RecipeServiceTest {
                 .map(ingredientsDTOMapper)
                 .map(i -> i.ingredientName())
                 .collect(Collectors.toList())).isEqualTo(recipeRegistrationRequest.ingredients());
-        assertThat(capturedSteps.stream()
-                .map(stepsDTOMapper)
-                .map(s -> s.description())
-                .collect(Collectors.toList())).isEqualTo(recipeRegistrationRequest.steps());
+        assertThat(capturedSteps.getDescription()).isEqualTo(recipeRegistrationRequest.steps());
 
-    }
-
-    @Test
-    void getRecipeById() {
-        // Given
-        Long id = FAKER.number().randomNumber();
-        String recipeName = FAKER.name().fullName();
-        Date recipeCreateDate = new Date();
-        Recipe recipe = new Recipe(
-                id,
-                recipeName,
-                recipeCreateDate
-        );
-
-        when(recipeRepository.findById(id))
-                .thenReturn(Optional.of(recipe));
-
-        //WHEN
-        Recipe actual = underTest.getRecipeById(id).get();
-
-        // Then
-        assertThat(actual).isEqualTo(recipe);
     }
 
     @Test
@@ -181,24 +157,25 @@ class RecipeServiceTest {
         String stepName = FAKER.name().name().toLowerCase();
         String recipeName = FAKER.name().name().toLowerCase();
         Long id = FAKER.number().randomNumber();
+        Date createDate = new Date();
         Recipe recipe = new Recipe(
                 id,
                 recipeName,
-                new Date()
+                createDate
         );
 
         recipe.setIngredients(List.of(new Ingredients(
                 id,
                 ingredientName,
-                new Date(),
+                createDate,
                 recipe
         )));
-        recipe.setSteps(List.of(new Steps(
+        recipe.setSteps(new Steps(
                 id,
                 stepName,
-                new Date(),
+                createDate,
                 recipe
-        )));
+        ));
 
         when(recipeRepository.findByNameContaining(recipeName))
                 .thenReturn(List.of(recipe));
@@ -215,23 +192,23 @@ class RecipeServiceTest {
         // Given
         Long id = FAKER.number().randomNumber();
         String recipeName = FAKER.name().fullName();
-        Date recipeCreateDate = new Date();
+        Date createDate = new Date();
         Recipe recipe = new Recipe(
                 id,
                 recipeName,
-                recipeCreateDate
+                createDate
         );
         recipe.setIngredients(List.of(
                 new Ingredients(FAKER.name().name().toLowerCase(),
-                        new Date(),
+                        createDate,
                         recipe)
         ));
 
-        recipe.setSteps(List.of(
+        recipe.setSteps(
                 new Steps(FAKER.name().name().toLowerCase(),
-                        new Date(),
+                        createDate,
                         recipe)
-        ));
+        );
 
         when(recipeRepository.findById(id))
                 .thenReturn(Optional.of(recipe));
@@ -278,12 +255,12 @@ class RecipeServiceTest {
                 new Date(),
                 recipe
         )));
-        recipe.setSteps(List.of(new Steps(
+        recipe.setSteps(new Steps(
                 id,
                 stepName,
                 new Date(),
                 recipe
-        )));
+        ));
 
         when(recipeRepository.getAllRecipesByNameOrIngredient(recipeName))
                 .thenReturn(List.of(recipe));
@@ -302,25 +279,29 @@ class RecipeServiceTest {
         String stepName = FAKER.name().name().toLowerCase();
         String recipeName = FAKER.name().name().toLowerCase();
         Long id = FAKER.number().randomNumber();
+        Date createDate = new Date();
         Recipe recipe = new Recipe(
                 id,
                 recipeName,
-                new Date()
+                createDate
         );
 
         recipe.setIngredients(List.of(new Ingredients(
                 id,
                 ingredientName,
-                new Date(),
+                createDate,
                 recipe
         )));
-        recipe.setSteps(List.of(new Steps(
+        recipe.setSteps(new Steps(
                 id,
                 stepName,
-                new Date(),
+                createDate,
                 recipe
-        )));
-        when(recipeRepository.findById(id)).thenReturn(Optional.of(recipe));
+        ));
+        when(recipeRepository.existsRecipeByIdrecipe(id))
+                .thenReturn(Boolean.TRUE);
+        when(recipeRepository.findById(id))
+                .thenReturn(Optional.of(recipe));
         //WHEN
         RecipeUpdateRequest request = new RecipeUpdateRequest(FAKER.name().name().toLowerCase(), null, null);
         underTest.updateRecipe(id, request);
@@ -345,25 +326,30 @@ class RecipeServiceTest {
         String stepName = FAKER.name().name().toLowerCase();
         String recipeName = FAKER.name().name().toLowerCase();
         Long id = FAKER.number().randomNumber();
+        Date createDate = new Date();
         Recipe recipe = new Recipe(
                 id,
                 recipeName,
-                new Date()
+                createDate
         );
 
         recipe.setIngredients(List.of(new Ingredients(
                 id,
                 ingredientName,
-                new Date(),
+                createDate,
                 recipe
         )));
-        recipe.setSteps(List.of(new Steps(
+        recipe.setSteps(new Steps(
                 id,
                 stepName,
-                new Date(),
+                createDate,
                 recipe
-        )));
-        when(recipeRepository.findById(id)).thenReturn(Optional.of(recipe));
+        ));
+
+        when(recipeRepository.existsRecipeByIdrecipe(id))
+                .thenReturn(Boolean.TRUE);
+        when(recipeRepository.findById(id))
+                .thenReturn(Optional.of(recipe));
         //WHEN
         RecipeUpdateRequest request = new RecipeUpdateRequest(null,
                 List.of(FAKER.name().nameWithMiddle().toLowerCase()),
@@ -399,29 +385,34 @@ class RecipeServiceTest {
         String stepName = FAKER.name().name().toLowerCase();
         String recipeName = FAKER.name().name().toLowerCase();
         Long id = FAKER.number().randomNumber();
+        Date createDate = new Date();
         Recipe recipe = new Recipe(
                 id,
                 recipeName,
-                new Date()
+                createDate
         );
 
         recipe.setIngredients(List.of(new Ingredients(
                 id,
                 ingredientName,
-                new Date(),
+                createDate,
                 recipe
         )));
-        recipe.setSteps(List.of(new Steps(
+        recipe.setSteps(new Steps(
                 id,
                 stepName,
-                new Date(),
+                createDate,
                 recipe
-        )));
-        when(recipeRepository.findById(id)).thenReturn(Optional.of(recipe));
+        ));
+
+        when(recipeRepository.existsRecipeByIdrecipe(id))
+                .thenReturn(Boolean.TRUE);
+        when(recipeRepository.findById(id))
+                .thenReturn(Optional.of(recipe));
         //WHEN
         RecipeUpdateRequest request = new RecipeUpdateRequest(null,
                 null,
-                List.of(FAKER.name().nameWithMiddle().toLowerCase()));
+                FAKER.name().nameWithMiddle());
         underTest.updateRecipe(id, request);
 
         ArgumentCaptor<Recipe> recipeArgumentCaptor = ArgumentCaptor.forClass(
@@ -431,19 +422,16 @@ class RecipeServiceTest {
 
         Recipe capturedRecipe = recipeArgumentCaptor.getValue();
 
-        ArgumentCaptor<List<Steps>> stepsArgumentCaptor = ArgumentCaptor.forClass(
-                List.class
+        ArgumentCaptor<Steps> stepsArgumentCaptor = ArgumentCaptor.forClass(
+                Steps.class
         );
-        verify(stepsRepository).saveAll(stepsArgumentCaptor.capture());
+        verify(stepsRepository).save(stepsArgumentCaptor.capture());
 
-        List<Steps> capturedSteps = stepsArgumentCaptor.getValue();
+        Steps capturedSteps = stepsArgumentCaptor.getValue();
 
         assertThat(capturedRecipe.getName()).isEqualTo(recipe.getName());
         assertThat(capturedRecipe.getIngredients()).isEqualTo(recipe.getIngredients());
-        assertThat(capturedSteps.stream()
-                .map(stepsDTOMapper)
-                .map(s -> s.description())
-                .collect(Collectors.toList())).isEqualTo(request.steps());
+        assertThat(capturedSteps.getDescription()).isEqualTo(request.steps());
     }
 
     @Test
@@ -453,29 +441,34 @@ class RecipeServiceTest {
         String stepName = FAKER.name().name().toLowerCase();
         String recipeName = FAKER.name().name().toLowerCase();
         Long id = FAKER.number().randomNumber();
+        Date createDate = new Date();
         Recipe recipe = new Recipe(
                 id,
                 recipeName,
-                new Date()
+                createDate
         );
 
         recipe.setIngredients(List.of(new Ingredients(
                 id,
                 ingredientName,
-                new Date(),
+                createDate,
                 recipe
         )));
-        recipe.setSteps(List.of(new Steps(
+        recipe.setSteps(new Steps(
                 id,
                 stepName,
-                new Date(),
+                createDate,
                 recipe
-        )));
-        when(recipeRepository.findById(id)).thenReturn(Optional.of(recipe));
+        ));
+
+        when(recipeRepository.existsRecipeByIdrecipe(id))
+                .thenReturn(Boolean.TRUE);
+        when(recipeRepository.findById(id))
+                .thenReturn(Optional.of(recipe));
         //WHEN
         RecipeUpdateRequest request = new RecipeUpdateRequest(FAKER.name().fullName().toLowerCase(),
                 List.of(FAKER.funnyName().name().toLowerCase()),
-                List.of(FAKER.name().nameWithMiddle().toLowerCase()));
+                FAKER.name().nameWithMiddle().toLowerCase());
         underTest.updateRecipe(id, request);
 
         ArgumentCaptor<Recipe> recipeArgumentCaptor = ArgumentCaptor.forClass(
@@ -492,22 +485,19 @@ class RecipeServiceTest {
 
         List<Ingredients> capturedIngredients = ingredientsArgumentCaptor.getValue();
 
-        ArgumentCaptor<List<Steps>> stepsArgumentCaptor = ArgumentCaptor.forClass(
-                List.class
+        ArgumentCaptor<Steps> stepsArgumentCaptor = ArgumentCaptor.forClass(
+                Steps.class
         );
-        verify(stepsRepository).saveAll(stepsArgumentCaptor.capture());
+        verify(stepsRepository).save(stepsArgumentCaptor.capture());
 
-        List<Steps> capturedSteps = stepsArgumentCaptor.getValue();
+        Steps capturedSteps = stepsArgumentCaptor.getValue();
 
         assertThat(capturedRecipe.getName()).isEqualTo(request.name());
         assertThat(capturedIngredients.stream()
                 .map(ingredientsDTOMapper)
                 .map(i -> i.ingredientName())
                 .collect(Collectors.toList())).isEqualTo(request.ingredients());
-        assertThat(capturedSteps.stream()
-                .map(stepsDTOMapper)
-                .map(s -> s.description())
-                .collect(Collectors.toList())).isEqualTo(request.steps());
+        assertThat(capturedSteps.getDescription()).isEqualTo(request.steps());
     }
 
     @Test
@@ -529,23 +519,24 @@ class RecipeServiceTest {
                 new Date(),
                 recipe
         )));
-        recipe.setSteps(List.of(new Steps(
+        recipe.setSteps(new Steps(
                 id,
                 stepName,
                 new Date(),
                 recipe
-        )));
-        when(recipeRepository.findById(id)).thenReturn(Optional.of(recipe));
+        ));
+
+        when(recipeRepository.existsRecipeByIdrecipe(id))
+                .thenReturn(Boolean.TRUE);
+        when(recipeRepository.findById(id))
+                .thenReturn(Optional.of(recipe));
         //WHEN
         RecipeUpdateRequest request = new RecipeUpdateRequest(recipe.getName(),
                 recipe.getIngredients().stream()
                         .map(ingredientsDTOMapper)
                         .map(i -> i.ingredientName())
                         .collect(Collectors.toList()),
-                recipe.getSteps().stream()
-                        .map(stepsDTOMapper)
-                        .map(s -> s.description())
-                        .collect(Collectors.toList()));
+                recipe.getSteps().getDescription());
 
         // Then
         assertThatThrownBy(() -> underTest.updateRecipe(id, request))
@@ -560,12 +551,12 @@ class RecipeServiceTest {
         // GIVEN
         Long id = FAKER.number().randomNumber();
 
-        when(recipeRepository.findById(id)).thenReturn(Optional.empty());
+        when(recipeRepository.existsRecipeByIdrecipe(id)).thenReturn(Boolean.FALSE);
         //WHEN
         RecipeUpdateRequest request = new RecipeUpdateRequest(
                 FAKER.name().fullName().toLowerCase(),
                 List.of(FAKER.name().fullName().toLowerCase()),
-                List.of(FAKER.name().fullName().toLowerCase())
+                FAKER.name().fullName().toLowerCase()
         );
 
         // Then
@@ -580,7 +571,10 @@ class RecipeServiceTest {
         // GIVEN
         long id = FAKER.number().randomNumber();
 
-        when(recipeRepository.findById(id)).thenReturn(Optional.of(new Recipe()));
+        when(recipeRepository.existsRecipeByIdrecipe(id))
+                .thenReturn(Boolean.TRUE);
+        when(recipeRepository.findById(id))
+                .thenReturn(Optional.of(new Recipe()));
         //WHEN
         underTest.deleteRecipe(id);
         //THEN
@@ -592,7 +586,8 @@ class RecipeServiceTest {
         // GIVEN
         long id = FAKER.number().randomNumber();
 
-        when(recipeRepository.findById(id)).thenReturn(Optional.empty());
+        when(recipeRepository.existsRecipeByIdrecipe(id))
+                .thenReturn(Boolean.FALSE);
         //WHEN
         assertThatThrownBy(() -> underTest.findRecipeById(id))
                 .isInstanceOf(ResourceNotFoundException.class)
