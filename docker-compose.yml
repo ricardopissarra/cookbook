@@ -2,7 +2,7 @@ version: '3'
 services:
   cookbookdb:
     container_name: postgres
-    image: postgres
+    image: postgres:14.1
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
