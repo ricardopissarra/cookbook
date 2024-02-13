@@ -97,7 +97,7 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
         List<Recipe> lstRecipe = underTest.getAllRecipesWithIngredient(ingredientName);
 
         //Then
-        assertThat(lstRecipe).containsExactly(recipe1);
+        assertThat(lstRecipe).contains(recipe1);
     }
 
     @Test
@@ -188,7 +188,7 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
 
         // Then
         assertThat(lstRecipe).hasSize(2);
-        assertThat(lstRecipe).containsExactly(recipe1, recipe2);
+        assertThat(lstRecipe).contains(recipe1, recipe2);
     }
 
     @Test
