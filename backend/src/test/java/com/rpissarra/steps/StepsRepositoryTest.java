@@ -2,7 +2,6 @@ package com.rpissarra.steps;
 
 import com.rpissarra.AbstractDaoUnitTest;
 import com.rpissarra.ingredients.IngredientRepository;
-import com.rpissarra.ingredients.Ingredients;
 import com.rpissarra.recipe.Recipe;
 import com.rpissarra.recipe.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase( replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -55,18 +53,6 @@ class StepsRepositoryTest extends AbstractDaoUnitTest {
         );
         underTest.save(s1);
 
-        randomStep = FAKER.funnyName().name();
-        Steps s2 = new Steps(
-                randomStep, new Date(), recipe
-        );
-        underTest.save(s2);
-
-        randomStep = FAKER.funnyName().name();
-        Steps s3 = new Steps(
-                randomStep, new Date(), recipe
-        );
-        underTest.save(s3);
-
         Long id = recipeRepository.findAll()
                 .stream()
                 .filter(r -> r.getName().equals(recipeName))
@@ -75,10 +61,10 @@ class StepsRepositoryTest extends AbstractDaoUnitTest {
                 .orElseThrow();
 
         // When
-        List<Steps> lstSteps = underTest.findAllStepsByRecipeId(id);
+        Steps recipeSteps = underTest.findStepsByRecipeId(id);
 
         // Then
-        assertThat(lstSteps).containsExactly(s1, s2, s3);
+        assertThat(recipeSteps).isEqualTo(s1);
     }
 
     @Test
@@ -86,9 +72,9 @@ class StepsRepositoryTest extends AbstractDaoUnitTest {
         // Given
         Long id = -1L;
         // When
-        List<Steps> lstSteps = underTest.findAllStepsByRecipeId(id);
+        Steps recipeSteps = underTest.findStepsByRecipeId(id);
 
         // Then
-        assertThat(lstSteps).isEmpty();
+        assertThat(recipeSteps).isNull();
     }
 }

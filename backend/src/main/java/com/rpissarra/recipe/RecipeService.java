@@ -2,12 +2,12 @@ package com.rpissarra.recipe;
 
 import com.rpissarra.exception.RequestValidationException;
 import com.rpissarra.exception.ResourceNotFoundException;
-import com.rpissarra.ingredients.IngredientRepository;
 import com.rpissarra.ingredients.Ingredients;
+import com.rpissarra.ingredients.IngredientsService;
 import com.rpissarra.recipe.dto.RecipeDTO;
 import com.rpissarra.recipe.dto.RecipeDTOMapper;
 import com.rpissarra.steps.Steps;
-import com.rpissarra.steps.StepsRepository;
+import com.rpissarra.steps.StepsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,18 +21,18 @@ import java.util.stream.Collectors;
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
-    private final IngredientRepository ingredientRepository;
-    private final StepsRepository stepsRepository;
+    private final IngredientsService ingredientService;
+    private final StepsService stepsService;
 
     private final RecipeDTOMapper recipeDTOMapper;
 
     public RecipeService(RecipeRepository recipeRepository,
-                         IngredientRepository ingredientRepository,
-                         StepsRepository stepsRepository,
+                         IngredientsService ingredientRepository,
+                         StepsService stepsRepository,
                          RecipeDTOMapper recipeDTOMapper) {
         this.recipeRepository = recipeRepository;
-        this.ingredientRepository = ingredientRepository;
-        this.stepsRepository = stepsRepository;
+        this.ingredientService = ingredientRepository;
+        this.stepsService = stepsRepository;
         this.recipeDTOMapper = recipeDTOMapper;
     }
 
@@ -54,8 +54,9 @@ public class RecipeService {
     }
 
     public void addRecipe(RecipeRegistrationRequest recipeRegistrationRequest) {
-        if (recipeRegistrationRequest.ingredients().isEmpty() || recipeRegistrationRequest.steps().isEmpty()) {
-            throw new RequestValidationException("The list of ingredients/steps can't be empty");
+        if (recipeRegistrationRequest.ingredients() == null || recipeRegistrationRequest.steps() == null ||
+                recipeRegistrationRequest.ingredients().isEmpty() || recipeRegistrationRequest.steps().isEmpty()) {
+            throw new RequestValidationException("The ingredients/steps fields can't be empty");
         }
         Date createDate = new Date();
         Recipe recipe = new Recipe(
@@ -65,9 +66,9 @@ public class RecipeService {
         recipeRepository.save(recipe);
 
         List<Ingredients> ingredientsList = convertToIngredientsList(recipeRegistrationRequest.ingredients(), recipe, createDate);
-        ingredientRepository.saveAll(ingredientsList);
+        ingredientService.saveAllIngredients(ingredientsList);
 
-        stepsRepository.save(new Steps(
+        stepsService.save(new Steps(
                 recipeRegistrationRequest.steps(),
                 createDate,
                 recipe
@@ -121,7 +122,7 @@ public class RecipeService {
         if (recipeUpdateRequest.ingredients() != null && !recipeUpdateRequest.ingredients().isEmpty()
         && !recipeUpdateRequest.ingredients().equals(listOriginalIngredients)) {
             deleteAllIngredientsByRecipeId(recipe.getIdrecipe());
-            ingredientRepository.saveAll(convertToIngredientsList(recipeUpdateRequest.ingredients(),
+            ingredientService.saveAllIngredients(convertToIngredientsList(recipeUpdateRequest.ingredients(),
                     recipe,
                     updateDate));
 
@@ -134,7 +135,7 @@ public class RecipeService {
         && !recipeUpdateRequest.steps().equals(originalStepDescription)) {
             Steps updatedSteps = recipe.getSteps();
             updatedSteps.setDescription(recipeUpdateRequest.steps());
-            stepsRepository.save(updatedSteps);
+            stepsService.save(updatedSteps);
             hasChanges = true;
         }
 
@@ -171,18 +172,18 @@ public class RecipeService {
     }
 
     private void deleteAllIngredientsByRecipeId(Long id) {
-        List<Ingredients> ingredientsList = ingredientRepository.findAllIngredientsByRecipeId(id);
+        List<Ingredients> ingredientsList = ingredientService.findAllIngredientsByRecipeId(id);
 
         if (!ingredientsList.isEmpty()) {
-            ingredientRepository.deleteAll(ingredientsList);
+            ingredientService.deleteAll(ingredientsList);
         }
     }
 
     private void deleteAllStepsByRecipeId(Long id) {
-        List<Steps> stepsList = stepsRepository.findAllStepsByRecipeId(id);
+        Steps stepsFromRecipe = stepsService.findStepsByRecipeId(id);
 
-        if (!stepsList.isEmpty()) {
-            stepsRepository.deleteAll(stepsList);
+        if (stepsFromRecipe != null) {
+            stepsService.delete(stepsFromRecipe);
         }
     }
 

@@ -3,13 +3,13 @@ package com.rpissarra.recipe;
 import com.github.javafaker.Faker;
 import com.rpissarra.exception.RequestValidationException;
 import com.rpissarra.exception.ResourceNotFoundException;
-import com.rpissarra.ingredients.IngredientRepository;
 import com.rpissarra.ingredients.Ingredients;
+import com.rpissarra.ingredients.IngredientsService;
 import com.rpissarra.ingredients.dto.IngredientsDTOMapper;
 import com.rpissarra.recipe.dto.RecipeDTO;
 import com.rpissarra.recipe.dto.RecipeDTOMapper;
 import com.rpissarra.steps.Steps;
-import com.rpissarra.steps.StepsRepository;
+import com.rpissarra.steps.StepsService;
 import com.rpissarra.steps.dto.StepsDTOMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,9 +33,9 @@ class RecipeServiceTest {
     @Mock
     private RecipeRepository recipeRepository;
     @Mock
-    private IngredientRepository ingredientRepository;
+    private IngredientsService ingredientsService;
     @Mock
-    private StepsRepository stepsRepository;
+    private StepsService stepsService;
 
     private AutoCloseable autoCloseable;
     private Faker FAKER;
@@ -50,8 +50,8 @@ class RecipeServiceTest {
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         underTest = new RecipeService(recipeRepository,
-                ingredientRepository,
-                stepsRepository,
+                ingredientsService,
+                stepsService,
                 recipeDTOMapper);
         FAKER = new Faker();
     }
@@ -129,14 +129,14 @@ class RecipeServiceTest {
         ArgumentCaptor<List<Ingredients>> ingredientsArgumentCaptor = ArgumentCaptor.forClass(
                 List.class
         );
-        verify(ingredientRepository).saveAll(ingredientsArgumentCaptor.capture());
+        verify(ingredientsService).saveAllIngredients(ingredientsArgumentCaptor.capture());
 
         List<Ingredients> capturedIngredients = ingredientsArgumentCaptor.getValue();
 
         ArgumentCaptor<Steps> stepsArgumentCaptor = ArgumentCaptor.forClass(
                 Steps.class
         );
-        verify(stepsRepository).save(stepsArgumentCaptor.capture());
+        verify(stepsService).save(stepsArgumentCaptor.capture());
 
         Steps capturedSteps = stepsArgumentCaptor.getValue();
 
@@ -366,7 +366,7 @@ class RecipeServiceTest {
         ArgumentCaptor<List<Ingredients>> ingredientsArgumentCaptor = ArgumentCaptor.forClass(
                 List.class
         );
-        verify(ingredientRepository).saveAll(ingredientsArgumentCaptor.capture());
+        verify(ingredientsService).saveAllIngredients(ingredientsArgumentCaptor.capture());
 
         List<Ingredients> capturedIngredients = ingredientsArgumentCaptor.getValue();
 
@@ -425,7 +425,7 @@ class RecipeServiceTest {
         ArgumentCaptor<Steps> stepsArgumentCaptor = ArgumentCaptor.forClass(
                 Steps.class
         );
-        verify(stepsRepository).save(stepsArgumentCaptor.capture());
+        verify(stepsService).save(stepsArgumentCaptor.capture());
 
         Steps capturedSteps = stepsArgumentCaptor.getValue();
 
@@ -481,14 +481,14 @@ class RecipeServiceTest {
         ArgumentCaptor<List<Ingredients>> ingredientsArgumentCaptor = ArgumentCaptor.forClass(
                 List.class
         );
-        verify(ingredientRepository).saveAll(ingredientsArgumentCaptor.capture());
+        verify(ingredientsService).saveAllIngredients(ingredientsArgumentCaptor.capture());
 
         List<Ingredients> capturedIngredients = ingredientsArgumentCaptor.getValue();
 
         ArgumentCaptor<Steps> stepsArgumentCaptor = ArgumentCaptor.forClass(
                 Steps.class
         );
-        verify(stepsRepository).save(stepsArgumentCaptor.capture());
+        verify(stepsService).save(stepsArgumentCaptor.capture());
 
         Steps capturedSteps = stepsArgumentCaptor.getValue();
 
