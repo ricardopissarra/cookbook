@@ -122,7 +122,7 @@ public class RecipeController {
                             schema = @Schema(implementation = RecipeRegistrationRequest.class)))}
     )
     @PostMapping(produces = "application/json", consumes = "application/json")
-    public ResponseEntity<?> insertRecipe(
+    public ResponseEntity<RecipeRegistrationRequest> insertRecipe(
             @RequestBody RecipeRegistrationRequest recipeRegistrationRequest
     ) {
         recipeService.addRecipe(recipeRegistrationRequest);

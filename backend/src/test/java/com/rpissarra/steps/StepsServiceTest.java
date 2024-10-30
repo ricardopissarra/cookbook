@@ -1,11 +1,7 @@
 package com.rpissarra.steps;
 
 import com.github.javafaker.Faker;
-import com.rpissarra.ingredients.Ingredients;
 import com.rpissarra.recipe.Recipe;
-import com.rpissarra.recipe.RecipeRegistrationRequest;
-import com.rpissarra.recipe.RecipeService;
-import com.rpissarra.recipe.dto.RecipeDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,12 +10,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -30,13 +22,13 @@ class StepsServiceTest {
     @Mock
     private StepsRepository stepsRepository;
     private AutoCloseable autoCloseable;
-    private Faker FAKER;
+    private Faker faker;
 
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         underTest = new StepsService(stepsRepository);
-        FAKER = new Faker();
+        faker = new Faker();
     }
 
     @AfterEach
@@ -47,9 +39,9 @@ class StepsServiceTest {
     @Test
     void findStepsByRecipeId() {
         // GIVEN
-        Long id = FAKER.number().randomNumber();
-        String recipeName = FAKER.name().fullName();
-        String stepsDescription = FAKER.name().fullName();
+        Long id = faker.number().randomNumber();
+        String recipeName = faker.name().fullName();
+        String stepsDescription = faker.name().fullName();
         Date createDate = new Date();
         Recipe recipe = new Recipe(
                 id,
@@ -79,8 +71,8 @@ class StepsServiceTest {
         // GIVEN
         Date currDate = new Date();
 
-        String recipeName = FAKER.name().firstName();
-        String stepDescription = FAKER.name().firstName();
+        String recipeName = faker.name().firstName();
+        String stepDescription = faker.name().firstName();
 
         Recipe recipe = new Recipe(recipeName,
                 currDate);
@@ -106,10 +98,10 @@ class StepsServiceTest {
     void delete() {
         // GIVEN
         Steps steps = new Steps(
-                FAKER.name().nameWithMiddle(),
+                faker.name().nameWithMiddle(),
                 new Date(),
                 new Recipe(
-                        FAKER.name().fullName(),
+                        faker.name().fullName(),
                         new Date()
                 )
         );
