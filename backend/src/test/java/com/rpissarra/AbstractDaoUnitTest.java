@@ -34,7 +34,7 @@ public abstract class AbstractDaoUnitTest {
                     .withReuse(true);
 
 
-    protected static Faker FAKER = new Faker();
+    protected static Faker faker = new Faker();
 
     public static class DataSourceInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 

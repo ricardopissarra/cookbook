@@ -6,7 +6,6 @@ import com.rpissarra.steps.dto.StepsDTOMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 public class RecipeDTOMapper implements Function<Recipe, RecipeDTO> {
@@ -26,7 +25,7 @@ public class RecipeDTOMapper implements Function<Recipe, RecipeDTO> {
                 recipe.getIngredients()
                         .stream()
                         .map(ingredientsDTOMapper)
-                        .collect(Collectors.toList()),
+                        .toList(),
                 stepsDTOMapper.apply(recipe.getSteps()));
     }
 }

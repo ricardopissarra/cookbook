@@ -16,7 +16,7 @@ import java.util.List;
 
 
 @DataJpaTest
-@AutoConfigureTestDatabase( replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class IngredientRepositoryTest extends AbstractDaoUnitTest {
 
     @Autowired
@@ -38,26 +38,26 @@ class IngredientRepositoryTest extends AbstractDaoUnitTest {
     @Test
     void findAllIngredientsByRecipeIdIsNotEmpty() {
         // Given
-        String recipeName = FAKER.name().name();
+        String recipeName = faker.name().name();
 
         Recipe recipe = new Recipe(
                 recipeName, new Date()
         );
         recipeRepository.save(recipe);
 
-        String randomIngredientName = FAKER.funnyName().name();
+        String randomIngredientName = faker.funnyName().name();
         Ingredients i1 = new Ingredients(
                 randomIngredientName, new Date(), recipe
         );
         underTest.save(i1);
 
-        randomIngredientName = FAKER.funnyName().name();
+        randomIngredientName = faker.funnyName().name();
         Ingredients i2 = new Ingredients(
                 randomIngredientName, new Date(), recipe
         );
         underTest.save(i2);
 
-        randomIngredientName = FAKER.funnyName().name();
+        randomIngredientName = faker.funnyName().name();
         Ingredients i3 = new Ingredients(
                 randomIngredientName, new Date(), recipe
         );

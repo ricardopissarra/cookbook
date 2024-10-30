@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Date;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,14 +39,14 @@ class StepsRepositoryTest extends AbstractDaoUnitTest {
     @Test
     void findAllStepsByRecipeIdIsNotEmpty() {
         // Given
-        String recipeName = FAKER.name().name();
+        String recipeName = faker.name().name();
 
         Recipe recipe = new Recipe(
                 recipeName, new Date()
         );
         recipeRepository.save(recipe);
 
-        String randomStep = FAKER.funnyName().name();
+        String randomStep = faker.funnyName().name();
         Steps s1 = new Steps(
                 randomStep, new Date(), recipe
         );

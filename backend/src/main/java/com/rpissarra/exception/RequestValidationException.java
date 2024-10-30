@@ -9,8 +9,6 @@ public class RequestValidationException extends RuntimeException {
     public RequestValidationException() {
     }
 
-    ;
-
     public RequestValidationException(String message) {
         super(message);
     }

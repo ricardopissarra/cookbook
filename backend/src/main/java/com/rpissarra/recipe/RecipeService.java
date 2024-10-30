@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -25,6 +24,8 @@ public class RecipeService {
     private final StepsService stepsService;
 
     private final RecipeDTOMapper recipeDTOMapper;
+
+    private static final String CANT_FIND_RECIPE_ID = "Could not find any Recipe with id [%s]";
 
     public RecipeService(RecipeRepository recipeRepository,
                          IngredientsService ingredientRepository,
@@ -41,7 +42,7 @@ public class RecipeService {
         return recipeRepository.findAll()
                 .stream()
                 .map(recipeDTOMapper)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<RecipeDTO> getAllRecipesWithIngredient(String ingredient) {
@@ -50,7 +51,7 @@ public class RecipeService {
         return lstRecipes
                 .stream()
                 .map(recipeDTOMapper)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void addRecipe(RecipeRegistrationRequest recipeRegistrationRequest) {
@@ -80,14 +81,14 @@ public class RecipeService {
 
         return lstRecipes.stream()
                 .map(recipeDTOMapper)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public RecipeDTO findRecipeById(Long id) {
         return recipeRepository.findById(id)
                 .map(recipeDTOMapper)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException("Could not find any Recipe with id [%s]".formatted(id))
+                        () -> new ResourceNotFoundException(CANT_FIND_RECIPE_ID.formatted(id))
                 );
     }
 
@@ -95,7 +96,7 @@ public class RecipeService {
         List<Recipe> lstRecipe = recipeRepository.getAllRecipesByNameOrIngredient(nameOrIngredient.toLowerCase());
         return lstRecipe.stream()
                 .map(recipeDTOMapper)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void updateRecipe(Long id, RecipeUpdateRequest recipeUpdateRequest) {
@@ -104,7 +105,7 @@ public class RecipeService {
         if (recipeRepository.existsRecipeByIdrecipe(id)) {
             recipe = recipeRepository.findById(id).get();
         } else {
-            throw new ResourceNotFoundException("Could not find any Recipe with id [%s]".formatted(id));
+            throw new ResourceNotFoundException(CANT_FIND_RECIPE_ID.formatted(id));
         }
         boolean hasChanges = false;
 
@@ -113,11 +114,10 @@ public class RecipeService {
             hasChanges = true;
         }
 
-        // TODO: Maybe use Set Instead of List and try to really update instead of delete and insert
         List<String> listOriginalIngredients = recipe.getIngredients()
                                     .stream()
                                     .map(i -> i.getName())
-                                    .collect(Collectors.toList());
+                                    .toList();
 
         if (recipeUpdateRequest.ingredients() != null && !recipeUpdateRequest.ingredients().isEmpty()
         && !recipeUpdateRequest.ingredients().equals(listOriginalIngredients)) {
@@ -150,7 +150,7 @@ public class RecipeService {
 
     public void deleteRecipe(Long id) {
         if (!recipeRepository.existsRecipeByIdrecipe(id)) {
-            throw new ResourceNotFoundException("Could not find any Recipe with id [%s]".formatted(id));
+            throw new ResourceNotFoundException(CANT_FIND_RECIPE_ID.formatted(id));
         }
         deleteAllIngredientsByRecipeId(id);
         deleteAllStepsByRecipeId(id);

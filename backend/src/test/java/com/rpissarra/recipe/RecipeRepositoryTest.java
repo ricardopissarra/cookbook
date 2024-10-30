@@ -39,7 +39,7 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
     @Test
     void existsRecipeByIdrecipeIsTrue() {
         // Given
-        String name = FAKER.name().nameWithMiddle().toLowerCase();
+        String name = faker.name().nameWithMiddle().toLowerCase();
         Recipe recipe = new Recipe(
                 name, new Date()
         );
@@ -71,7 +71,7 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
     @Test
     void getAllRecipesWithIngredientIsNotEmpty() {
         // Given
-        String recipeName = FAKER.name().nameWithMiddle().toLowerCase();
+        String recipeName = faker.name().nameWithMiddle().toLowerCase();
         String ingredientName = "carrot";
         Recipe recipe1 = new Recipe(
                 recipeName, new Date()
@@ -82,8 +82,8 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
         underTest.save(recipe1);
         ingredientRepository.save(ingredients1);
 
-        recipeName = FAKER.name().nameWithMiddle().toLowerCase();
-        String randomIngredientName = FAKER.name().nameWithMiddle();
+        recipeName = faker.name().nameWithMiddle().toLowerCase();
+        String randomIngredientName = faker.name().nameWithMiddle();
         Recipe recipe2 = new Recipe(
                 recipeName, new Date()
         );
@@ -103,9 +103,9 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
     @Test
     void getAllRecipesWithIngredientIsEmpty() {
         // Given
-        String recipeName = FAKER.name().nameWithMiddle().toLowerCase();
+        String recipeName = faker.name().nameWithMiddle().toLowerCase();
         String ingredientName = "carrot";
-        String randomIngredientName = FAKER.name().nameWithMiddle();
+        String randomIngredientName = faker.name().nameWithMiddle();
         Recipe recipe1 = new Recipe(
                 recipeName, new Date()
         );
@@ -115,7 +115,7 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
         underTest.save(recipe1);
         ingredientRepository.save(ingredients1);
 
-        recipeName = FAKER.name().nameWithMiddle().toLowerCase();
+        recipeName = faker.name().nameWithMiddle().toLowerCase();
         Recipe recipe2 = new Recipe(
                 recipeName, new Date()
         );
@@ -134,7 +134,7 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
 
     @Test
     void findByNameContainingIsNotEmpty() {
-        String name = FAKER.name().nameWithMiddle().toLowerCase();
+        String name = faker.name().nameWithMiddle().toLowerCase();
         Recipe recipe = new Recipe(
                 name, new Date()
         );
@@ -149,7 +149,7 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
     @Test
     void findByNameContainingIsEmpty() {
         // Given
-        String name = FAKER.name().nameWithMiddle().toLowerCase();
+        String name = faker.name().nameWithMiddle().toLowerCase();
 
         // When
         List<Recipe> lstRecipes = underTest.findByNameContaining(name);
@@ -161,8 +161,8 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
     @Test
     void getAllRecipesWithKeywordIsNotEmpty() {
         // Given
-        String recipeName = FAKER.name().nameWithMiddle().toLowerCase();
-        String keyword = FAKER.nation().language();
+        String recipeName = faker.name().nameWithMiddle().toLowerCase();
+        String keyword = faker.nation().language();
         Recipe recipe1 = new Recipe(
                recipeName, new Date()
         );
@@ -172,8 +172,8 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
         underTest.save(recipe1);
         ingredientRepository.save(ingredients1);
 
-        recipeName = FAKER.name().nameWithMiddle().toLowerCase();
-        String randomIngredient = FAKER.name().nameWithMiddle();
+        recipeName = faker.name().nameWithMiddle().toLowerCase();
+        String randomIngredient = faker.name().nameWithMiddle();
         Recipe recipe2 = new Recipe(
                 recipeName + " " + keyword, new Date()
         );
@@ -187,16 +187,17 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
         List<Recipe> lstRecipe = underTest.getAllRecipesByNameOrIngredient(keyword);
 
         // Then
-        assertThat(lstRecipe).hasSize(2);
-        assertThat(lstRecipe).contains(recipe1, recipe2);
+        assertThat(lstRecipe)
+                .hasSize(2)
+                .contains(recipe1, recipe2);
     }
 
     @Test
     void getAllRecipesWithKeywordIsEmpty() {
         // Given
-        String recipeName = FAKER.name().nameWithMiddle().toLowerCase();
-        String keyword = FAKER.nation().capitalCity();
-        String ingredientName = FAKER.name().nameWithMiddle();
+        String recipeName = faker.name().nameWithMiddle().toLowerCase();
+        String keyword = faker.nation().capitalCity();
+        String ingredientName = faker.name().nameWithMiddle();
         Recipe recipe1 = new Recipe(
                 recipeName, new Date()
         );
@@ -206,7 +207,7 @@ class RecipeRepositoryTest extends AbstractDaoUnitTest {
         underTest.save(recipe1);
         ingredientRepository.save(ingredients1);
 
-        recipeName = FAKER.name().nameWithMiddle().toLowerCase();
+        recipeName = faker.name().nameWithMiddle().toLowerCase();
         Recipe recipe2 = new Recipe(
                recipeName, new Date()
         );

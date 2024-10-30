@@ -15,13 +15,12 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class RecipeIntegrationTest {
+class RecipeIntegrationTest {
 
     @Autowired
     private WebTestClient webTestClient;
@@ -231,7 +230,7 @@ public class RecipeIntegrationTest {
         // get recipe by id && validate that is updated
         List<IngredientsDTO> lstIngredients = updatedIngredient.stream()
                 .map(IngredientsDTO::new)
-                .collect(Collectors.toList());
+                .toList();
 
 
         RecipeDTO expectedRecipe = new RecipeDTO(
